@@ -52,6 +52,16 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+
+    group    Group?  @relation(fields: [groupId], references: [id])
+    groupId  String?
+    subgroup Int     @default(1)
+}
+
+model Group {
+    id    String @id @default(cuid())
+    name  String @unique
+    users User[]
 }
 
 model VerificationToken {
