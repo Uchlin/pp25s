@@ -7,18 +7,24 @@ export default async function Page(
   props: { params: Promise<{ id: string }> }
   ) {
     const params = await props.params;
-    const user = await db.user.findUnique({ where: { id: params.id } });
+    const user = await db.user.findUnique(
+      {
+        where: { id: params.id },
+        include: {
+          group: true,
+        },
+      }
+    );
    
+    const groupJSX = user?.group && <><label>Группа</label><Link className="btn"  href={"/group/" + user?.group.id}>{user?.group.name + "-" + user.subgroup}</Link></>;
+
     if (!user)
       return (
         <main>
           <h1>User not found</h1>
         </main>
       );
-    const group =
-      user.groupId &&
-      (await db.group.findUnique({where: {id:user.groupId}}))
-    const groupJSX =group && <><label>Группа</label><Link href={"/group/" + group.id}>{group.name + "-" + user.subgroup}</Link></>;
+
    return (
      <main>
        <form action={updateUser} className="form-control">
@@ -47,7 +53,8 @@ export default async function Page(
              required
              className="input input-bordered"
              defaultValue={user.surname ?? ""}
-           />          
+           />
+           {groupJSX}
            <button type="submit" className="btn btn-primary">
              Обновить
            </button>

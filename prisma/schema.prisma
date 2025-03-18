@@ -42,6 +42,14 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
 model User {
     id            String    @id @default(cuid())
     firstname     String?
@@ -56,6 +64,10 @@ model User {
     group    Group?  @relation(fields: [groupId], references: [id])
     groupId  String?
     subgroup Int     @default(1)
+
+    studentTask StudentsOnTasks[]
+    tutorTask   Squad[]
+    grade       Grade[]
 }
 
 model Group {
@@ -64,10 +76,49 @@ model Group {
     users User[]
 }
 
-model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+// Лекции, лабы-пары, лабы-задания ...
+model TaskType {
+    id    String @id @default(cuid())
+    name  String @unique
+    tasks Task[]
+}
 
-    @@unique([identifier, token])
+model Task {
+    id    String @id @default(cuid())
+    name  String @unique
+    value Int    @default(1)
+
+    taskType   TaskType @relation(fields: [taskTypeId], references: [id])
+    taskTypeId String
+    squades    Squad[]
+    grades     Grade[]
+}
+
+model Squad {
+    id      String   @id @default(cuid())
+    task    Task     @relation(fields: [taskId], references: [id])
+    taskId  String
+    date    DateTime
+    tutor   User?    @relation(fields: [tutorId], references: [id])
+    tutorId String?
+
+    StudentsOnTasks StudentsOnTasks[]
+}
+
+model StudentsOnTasks {
+    student   User   @relation(fields: [studentId], references: [id])
+    studentId String
+    squad     Squad  @relation(fields: [squadId], references: [id], onDelete: Cascade)
+    squadId   String
+
+    @@id([studentId, squadId])
+}
+
+model Grade {
+    id        String @id @default(cuid())
+    task      Task   @relation(fields: [taskId], references: [id])
+    taskId    String
+    student   User   @relation(fields: [studentId], references: [id])
+    studentId String
+    value     Int
 }
