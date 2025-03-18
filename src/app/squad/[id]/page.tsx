@@ -5,7 +5,7 @@ import { deleteTutor } from "~/app/api/action/squad";
 import TutorSearch from "../../ui/tutorSearch";
 import { db } from "~/server/db";
 import { Students } from "~/app/_components/squad/students";
-import { api } from "~/trpc/server";
+// import { api } from "~/trpc/server";
 
 
 export default async function Page(props: {
@@ -32,7 +32,7 @@ export default async function Page(props: {
   const task = squad?.task
   const tutor = squad?.tutor  
 
-  const gr = await api.post.hello({ text: "server world" });
+  // const gr = await api.post.hello({ text: "server world" });
   // console.log("\n\nTRPC\n\n", gr);
  
   return (

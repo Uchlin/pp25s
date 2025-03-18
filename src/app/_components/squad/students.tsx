@@ -13,7 +13,7 @@ export function Students({
   taskId: string;
   squadId: string;
 }) {
-  const h = api.post.hello.useQuery({ text: "world" });
+  // const h = api.post.hello.useQuery({ text: "world" });
   // console.log("\n\nTRPC\n\n", h.data);
   const [search, setSearch] = React.useState<string>("");
   const gradeInputRefs = React.useRef<HTMLInputElement[]>([]);
