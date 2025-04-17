@@ -1,13 +1,9 @@
-import { auth } from "~/server/auth";
-import { api, HydrateClient } from "~/trpc/server";
-import { Navbar } from "./../_components/navbar";
-import { SigninLink } from "./../_components/signlink";
+
 import { db } from "~/server/db";
 import { AddUser } from "../_components/user/addUser";
 import UserTable from "../_components/user/userTable";
 import Pagination from "../ui/pagination";
 import GroupTable from "../_components/group/groupTable";
-import { group } from "console";
 import { AddGroup } from "../_components/group/addGroup";
 
 export default async function Page(props: {
@@ -30,8 +26,8 @@ export default async function Page(props: {
   return (
     <>
       <h1>Group page</h1>
-      <AddGroup/>
-      <GroupTable groups = {groups}/>
+      <AddGroup />
+      <GroupTable groups={groups} />
       <Pagination totalPages={pages} />
     </>
   );
